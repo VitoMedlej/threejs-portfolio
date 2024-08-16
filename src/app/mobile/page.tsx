@@ -26,7 +26,6 @@ export default function Home() {
         };
     
         document.addEventListener('click', enterFullscreen);
-        return () => document.removeEventListener('click', enterFullscreen);
 
         let isMovingRight= false;
         let isMovingLeft  = false;
@@ -362,6 +361,8 @@ export default function Home() {
             material.dispose();
             boxGeometry.dispose();
             sphereGeometry.dispose();
+            document.removeEventListener('click', enterFullscreen);
+
         };
     }, []);
 
