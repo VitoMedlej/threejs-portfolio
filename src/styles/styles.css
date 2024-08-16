@@ -1,0 +1,66 @@
+.main-title {
+  background: white;
+  color: black;
+  width: 50vw;
+  height: 100vh;
+  position: absolute;
+  left: 0%;
+  transform: translateX(0%);
+  z-index: 134124;
+  padding: 1em 0em;
+  text-align: center;
+  max-width: 500px;
+}
+
+@media (max-width: 550px) {
+  .main-title {
+    width: 100%;
+    padding: 0;
+    height: 60vh;
+  }
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mobile-buttons-container {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+}
+.mobile-buttons-container .mobile-button {
+  font-size: 1.8em;
+  width: 60px;
+  height: 60px;
+  margin: 5px 0;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.mobile-buttons-container .mobile-button:active {
+  background-color: #555;
+}
+.mobile-buttons-container .horizontal-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.mobile-buttons-container .horizontal-buttons .mobile-button {
+  margin: 0 10px;
+}/*# sourceMappingURL=styles.css.map */

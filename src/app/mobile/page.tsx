@@ -314,7 +314,7 @@ export default function Home() {
             // camera.position.z -=0.1;
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
-            camera.position.y = 10;
+            camera.position.y = 15;
 
             var direction = new THREE.Vector3();
             camera.getWorldDirection(direction);

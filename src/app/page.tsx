@@ -305,12 +305,13 @@ scene.add(ambientLight);
       //     node.material.needsUpdate = true;
       //   }
       // });
-
       const animate = () => {
         requestAnimationFrame(animate);
             stats.begin();
             lighthelper.update();
-
+            
+          
+         
         // let originalPosition = controls.getObject().position.clone();
 
         controls.moveRight(velocity.x * 1); // Adjust speed as needed
