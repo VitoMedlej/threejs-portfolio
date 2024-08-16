@@ -121,7 +121,7 @@ export default function Home() {
         const gltfloader = new GLTFLoader();
         const textureLoader = new THREE.TextureLoader();
         // const dummyTexture = textureLoader.load('/materials/laptoptexture.png');
-        gltfloader.load('/materials/untitled5.glb', (gltf) => {
+        gltfloader.load('/materials/new.glb', (gltf) => {
           gltf.scene.traverse((node) => {
             if (node instanceof THREE.Mesh) {
                 node.receiveShadow = true;
@@ -369,9 +369,12 @@ export default function Home() {
     return <> 
    {/* <PictureFrame ref={pictureFrameRef} /> */}
     
-    <MobileButtons/> < canvas ref = {
+    < canvas ref = {
         canvasRef
     }
-    style = {{ width: '100vw', height: '100vh' }}/>
+    style = {{ width: '100vw', height: '100vh' }}>
+    <MobileButtons/> 
+
+    </canvas>
   </ >
 };

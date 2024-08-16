@@ -103,7 +103,7 @@ renderer.shadowMap.enabled = true;
 const gltfloader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 // const dummyTexture = textureLoader.load('/materials/laptoptexture.png');
-gltfloader.load('/materials/untitled5.glb', (gltf:  any) => {
+gltfloader.load('/materials/new.glb', (gltf:  any) => {
   gltf.scene.traverse((node : any) => {
     if (node instanceof THREE.Mesh) {
         node.receiveShadow = true;
