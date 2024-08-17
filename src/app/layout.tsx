@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/styles.css";
 import Starter from "./Starter/Starter";
+import MobileButtons from "./MobileButtons/MobileButtons";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
       
       <body style={{position:'relative', height: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} className={inter.className}>
        <Starter/>
+
         <>
         {children}
         </>

@@ -16,12 +16,11 @@ const Starter = () => {
   }, []);
 
   const handleFullScreen = () => {
-    const canvas = document.querySelector('canvas');
+    const container = document.getElementById('fullscreen-container');
 
-    if (canvas && !document.fullscreenElement) {
-      canvas.requestFullscreen().then(() => {
-        // Lock pointer immediately after entering fullscreen
-        canvas.requestPointerLock();
+    if (container && !document.fullscreenElement) {
+      container.requestFullscreen().then(() => {
+        document.querySelector('canvas')?.requestPointerLock();
       }).catch((err) => console.error(err));
     } else {
       document.exitFullscreen();

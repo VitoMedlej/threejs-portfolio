@@ -272,7 +272,7 @@ scene.add(terrain);
   
 
 
-const ambientLight = new THREE.AmbientLight('white',0.25)
+const ambientLight = new THREE.AmbientLight('white',2)
 ambientLight.position.set(0,10,0);
 scene.add(ambientLight);
 
@@ -355,7 +355,7 @@ scene.add(ambientLight);
     {/* <PictureFrame ref={pictureFrameRef} /> */}
 
       {/* <MobileButtons /> */}
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} style={{ width: '100%', height: '100%', pointerEvents: 'none' }} />
     </>
   );
 };

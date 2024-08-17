@@ -3,6 +3,7 @@ import React from 'react'
 
 const MobileButtons = () => {
   return (
+
     <div className="mobile-buttons-container">
       <button id="w" className="mobile-button">W</button>
       <div className="horizontal-buttons">
