@@ -1,10 +1,11 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Button, Typography } from '@mui/material';
+import { useFullscreen } from '../Context/Context';
 
 const Starter = () => {
-  const [isFullScreen, setFullScreen] = useState(false);
+  const { isfullscreen, setFullScreen } = useFullscreen();
 
   useEffect(() => {
     const handleFullScreenChange = () => {
@@ -12,11 +13,13 @@ const Starter = () => {
     };
 
     document.addEventListener('fullscreenchange', handleFullScreenChange);
+
     return () => document.removeEventListener('fullscreenchange', handleFullScreenChange);
-  }, []);
+  }, [setFullScreen]);
 
   const handleFullScreen = () => {
     const container = document.getElementById('fullscreen-container');
+    setFullScreen(true);
 
     if (container && !document.fullscreenElement) {
       container.requestFullscreen().then(() => {
@@ -24,11 +27,13 @@ const Starter = () => {
       }).catch((err) => console.error(err));
     } else {
       document.exitFullscreen();
+      setFullScreen(false);
     }
   };
 
   return (
-    <Box className='main-title' sx={{ display: isFullScreen ? 'none' : 'block', width: '200px', height: '100px' }}>
+    <Box className='main-title' 
+      sx={{ display: isfullscreen ? 'none' : 'block', width: '200px', height: '100px' }}>
       <Typography sx={{ fontSize: '1.75em', pt: 8, fontWeight: 500 }}>
         Hello Stranger! Welcome to my portfolio.
       </Typography>
@@ -40,7 +45,7 @@ const Starter = () => {
       </Typography>
       <Button
         onClick={handleFullScreen}
-        sx={{ width:'90%', fontStyle: 'italic', ':hover': { color: 'black', border: '1px solid black' }, background: 'black', color: 'white', mt: 4 }}>
+        sx={{ width: '90%', fontStyle: 'italic', ':hover': { color: 'black', border: '1px solid black' }, background: 'black', color: 'white', mt: 4 }}>
         DIVE RIGHT IN!
       </Button>
     </Box>

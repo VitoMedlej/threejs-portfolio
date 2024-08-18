@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/styles.css";
 import Starter from "./Starter/Starter";
-import MobileButtons from "./MobileButtons/MobileButtons";
+import ContextWrapper from "./Context/Context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +18,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      
+        
       <body style={{position:'relative', height: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} className={inter.className}>
-       <Starter/>
+      <ContextWrapper>
 
-        <>
+       <Starter/>
+        
         {children}
-        </>
+       
+        </ContextWrapper>
+
         </body>
     </html>
   );

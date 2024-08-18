@@ -1,18 +1,18 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 // import MobileButtons from "../MobileButtons/MobileButtons";
-import { FontLoader } from "three/addons/loaders/FontLoader.js";
-import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { GLTFLoader, MTLLoader } from "three-stdlib";
 import Stats from 'stats.js';
+import { useFullscreen } from "./Context/Context";
 
 
 const ThreeScene: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const pictureFrameRef : any = useRef();
+  const { isfullscreen, setFullScreen } = useFullscreen();
+  
+
   
   useEffect(() => {
     let scene: THREE.Scene,
@@ -67,7 +67,7 @@ const ThreeScene: React.FC = () => {
       const loader = new THREE.TextureLoader();
 
       scene = new THREE.Scene();
-      const objectLoader = new OBJLoader();
+      // const objectLoader = new OBJLoader();
 
 
 
@@ -284,7 +284,17 @@ scene.add(ambientLight);
       //   boundingBoxes.push(boundingBox);
       // });
 
-      
+    
+      const handleLockChange = () => {
+        const isLocked = document.pointerLockElement === canvasRef.current
+        if (isLocked) {
+          setFullScreen(true)
+        }
+        else {
+          setFullScreen(false)
+
+        }
+      };
 
       controls = new PointerLockControls(camera, renderer.domElement);
       canvasRef.current!.addEventListener("click", () => {
@@ -295,6 +305,7 @@ scene.add(ambientLight);
 
       document.addEventListener("keydown", onKeyDown);
       document.addEventListener("keyup", onKeyUp);
+      document.addEventListener('pointerlockchange', handleLockChange);
 
  
 
@@ -341,7 +352,7 @@ scene.add(ambientLight);
 
       animate();
     };
-
+  
     init();
 
     return () => {
@@ -351,12 +362,9 @@ scene.add(ambientLight);
   }, []);
 
   return (
-    <>
-    {/* <PictureFrame ref={pictureFrameRef} /> */}
-
-      {/* <MobileButtons /> */}
-      <canvas ref={canvasRef} style={{ width: '100%', height: '100%', pointerEvents: 'none' }} />
-    </>
+    <div id="fullscreen-container" style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+    <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+  </div>
   );
 };
 
