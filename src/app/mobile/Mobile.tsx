@@ -370,8 +370,8 @@ export default function Home() {
    {/* <PictureFrame ref={pictureFrameRef} /> */}
     
    <>
-   <div id="fullscreen-container" style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-      <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+   <div id="fullscreen-container" style={{ position: 'relative',width: '100%',  height: '100vh' }}>
+      <canvas ref={canvasRef} style={{     width: '100%', height: '100%' }} />
       <MobileButtons />
     </div>
   </>
