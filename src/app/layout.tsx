@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
         
-      <body style={{position:'relative', height: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} className={inter.className}>
+      <body style={{
+        overflowX:'hidden',
+        position:'relative', height: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} className={inter.className}>
       <ContextWrapper>
 
        <Starter/>

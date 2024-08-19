@@ -3,13 +3,18 @@ import {useEffect, useRef} from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import MobileButtons from '../MobileButtons/MobileButtons';
+import { useLoadState } from '../Context/Context';
+import { Box } from '@mui/material';
 
 export default function Home() {
     const canvasRef = useRef < any > (null);
+    const {isLoaded, setLoaded} = useLoadState()
     useEffect(() => {
+      console.log('canvasRef.current: ', canvasRef.current);
         if (!canvasRef.current) 
             return;
         let modelsLoaded = false;
+        console.log('modelsLoaded: ', modelsLoaded);
 
 
 
@@ -127,8 +132,19 @@ export default function Home() {
           scene.add(gltf.scene);
     
           modelsLoaded = true;
-          if (modelsLoaded) startRendering(); // Trigger rendering after models load
+          if (modelsLoaded) {
+            
+            startRendering();
+            setLoaded(true);
+          }
+          else {
+            setLoaded(false);
+
+          }
+            // Trigger rendering after models load
         }, undefined, (error: any) => {
+          setLoaded(false);
+
           console.error('An error occurred loading the model:', error);
         });
         
@@ -350,6 +366,8 @@ const barrierBoundingBoxes = barriers.map(barrier => {
 
 
 const startRendering = () => {
+  setLoaded(true);
+
   const animate = () => {
     requestAnimationFrame(animate);
 
@@ -428,10 +446,22 @@ const startRendering = () => {
    {/* <PictureFrame ref={pictureFrameRef} /> */}
     
    <>
-  { <div id="fullscreen-container" style={{ position: 'relative',width: '100%',  height: '100vh' }}>
+  <div id="fullscreen-container" style={{ position: 'relative',width: '100%',  height: '100vh' }}>
       <canvas ref={canvasRef} style={{     width: '100%', height: '100%' }} />
-      <MobileButtons />
-    </div>}
+      {isLoaded && <MobileButtons />}
+    </div>
+   
+    {!isLoaded ? <div id="fullscreen-container" style={{
+      paddingTop:'51vh',
+      textAlign:'center',
+      
+      height:'50vh', background:'black',color:'white', position: 'absolute',top:'0',right:0,width: '100%' }}>
+     <h1 style={{paddingTop:'1em'}}>
+     Loading 3D models, please wait... 
+     </h1>
+    </div>
+  : <></>  
+  }
   </>
   </ >
 };

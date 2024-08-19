@@ -2,10 +2,11 @@
 import React, { useContext, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Button, Typography } from '@mui/material';
-import { useFullscreen } from '../Context/Context';
+import { useFullscreen, useLoadState } from '../Context/Context';
 
 const Starter = () => {
   const { isfullscreen, setFullScreen } = useFullscreen();
+  const {isLoaded} = useLoadState()
 
   useEffect(() => {
     const handleFullScreenChange = () => {
@@ -45,11 +46,12 @@ const Starter = () => {
       <Typography sx={{ fontSize: '1.05em', pt: 1, fontWeight: 400 }}>
         Let me know at contact@vito-medlej.com or if you have any questions!
       </Typography>
-      <Button
+    {  <Button
+    disabled={!isLoaded}
         onClick={handleFullScreen}
         sx={{ py:2,fontWeight:600,width: '90%', fontStyle: 'italic', ':hover': { color: 'black', border: '1px solid black' }, background: 'black', color: 'white', mt: 4 }}>
         DIVE RIGHT IN!
-      </Button>
+      </Button>}
       </Box>
 
     </Box>

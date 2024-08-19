@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 
 export const FullScreenContext = createContext < any > ({});
+export const IsLoadedContext = createContext < any > (false);
 
 
 
@@ -11,12 +12,18 @@ export const FullScreenContext = createContext < any > ({});
       }
       ) => {
         const [isfullscreen,
-            setFullScreen] = useState(false);
+          setFullScreen] = useState(false);
 
+          const [isLoaded,
+            setLoaded] = useState(false);
+            
+            console.log('isLoaded: ', isLoaded);
 
             return (
                 <FullScreenContext.Provider value={{isfullscreen,setFullScreen}}>
+                <IsLoadedContext.Provider value={{isLoaded,setLoaded}}>
             {children}
+    </IsLoadedContext.Provider>
     </FullScreenContext.Provider>
             )
         }
@@ -24,3 +31,4 @@ export const FullScreenContext = createContext < any > ({});
 export default ContextWrapper
 
 export const useFullscreen = () => useContext(FullScreenContext);
+export const useLoadState = () => useContext(IsLoadedContext);

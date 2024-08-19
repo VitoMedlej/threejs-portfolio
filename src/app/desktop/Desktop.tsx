@@ -3,14 +3,15 @@ import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 // import MobileButtons from "../MobileButtons/MobileButtons";
-import { GLTFLoader, MTLLoader } from "three-stdlib";
+import { GLTFLoader } from "three-stdlib";
 import Stats from 'stats.js';
-import { useFullscreen } from "../Context/Context";
+import { useFullscreen, useLoadState } from "../Context/Context";
 
 
 const ThreeScene: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { isfullscreen, setFullScreen } = useFullscreen();
+  const {isLoaded, setLoaded} = useLoadState()
   
 
   
@@ -117,8 +118,15 @@ gltfloader.load('/materials/new.glb', (gltf: any) => {
   scene.add(gltf.scene);
 
   modelsLoaded = true;
-  if (modelsLoaded) startRendering(); // Trigger rendering after models load
+  if (modelsLoaded) {
+    startRendering();
+    setLoaded(true);
+  } else {
+    setLoaded(false);
+  }
 }, undefined, (error: any) => {
+  setLoaded(false);
+
   console.error('An error occurred loading the model:', error);
 });
 
@@ -375,7 +383,9 @@ scene.add(ambientLight);
           // Render only when models are loaded
           if (modelsLoaded) {
             handleMovement();
+
             renderer.render(scene, camera);
+            setLoaded(true);
           }
         };
         animate();
@@ -392,9 +402,23 @@ scene.add(ambientLight);
   }, []);
 
   return (
+    <>
     <div id="fullscreen-container" style={{ maxWidth:'1600px',margin:'0 auto', position: 'relative', width: '100vw', height: '100vh !Important' }}>
     <canvas ref={canvasRef} style={{ width: '100vh', height: '100vh !Important' }} />
   </div>
+  {!isLoaded ? <div id="fullscreen-container" style={{
+    // paddingTop:'51vh',
+    textAlign:'center',
+    
+    height:'100vh', background:'black',color:'white', position: 'absolute',top:'0',right:0,width: '50vw' }}>
+   <h1 style={{paddingTop:'1em'}}>
+   Loading 3D models, please wait... 
+   </h1>
+  </div>
+: <></>  
+}
+</>
+
   );
 };
 
