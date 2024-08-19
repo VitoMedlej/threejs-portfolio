@@ -245,28 +245,29 @@ scene.add(terrain);
       
 
 
-      // const pictureFrameGroup2 = pictureFrameRef.current.createPictureFrame({
-      //   textureURL: 'https://th.bing.com/th/id/R.6641d892daaa187a726aacefd32f8420?rik=ZUW%2fOeCuvEWmKg&pid=ImgRaw&r=0',
-      //   frameSize: {
-      //     thickness: 0.5,
-      //     depth: 0.5,
-      //     length: 12
-      //   },
-      //   pictureSize: {
-      //     width: 10,
-      //     height: 10
-      //   },
-      //   backgroundSize: {
-      //     width: 11,
-      //     height: 11
-      //   }
-      //   ,
-      //   location: {
-      //     x: 0,
-      //     y: 10,
-      //     z: -49,
-      //   }
-      // });
+// Video Element
+const video = document.createElement('video');
+video.src = '/materials/attar.mp4'; // Path to your video
+video.loop = true;
+video.muted = true;
+video.play();
+
+// Create Video Texture
+const videoTexture = new THREE.VideoTexture(video);
+videoTexture.minFilter = THREE.LinearFilter;
+videoTexture.magFilter = THREE.LinearFilter;
+videoTexture.format = THREE.RGBFormat;
+
+// Create Plane Geometry for the TV screen
+const geometry = new THREE.PlaneGeometry(65, 40); // Adjust size to fit your TV
+const material = new THREE.MeshBasicMaterial({ map: videoTexture });
+const tvScreen = new THREE.Mesh(geometry, material);
+
+// Position the TV screen where you need it
+tvScreen.position.set(7, 34, -52); // Adjust position as needed
+
+// Add the TV screen to your scene
+scene.add(tvScreen);
 
 
   
@@ -363,7 +364,7 @@ scene.add(ambientLight);
 
   return (
     <div id="fullscreen-container" style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-    <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+    <canvas ref={canvasRef} style={{ width: '100%', height: '100vh' }} />
   </div>
   );
 };

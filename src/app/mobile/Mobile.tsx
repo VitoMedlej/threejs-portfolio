@@ -232,7 +232,29 @@ export default function Home() {
 
 
 
+// Video Element
+const video = document.createElement('video');
+video.src = '/materials/attar.mp4'; // Path to your video
+video.loop = true;
+video.muted = true;
+video.play();
 
+// Create Video Texture
+const videoTexture = new THREE.VideoTexture(video);
+videoTexture.minFilter = THREE.LinearFilter;
+videoTexture.magFilter = THREE.LinearFilter;
+videoTexture.format = THREE.RGBFormat;
+
+// Create Plane Geometry for the TV screen
+const geometry = new THREE.PlaneGeometry(65, 40); // Adjust size to fit your TV
+const tvmaterial = new THREE.MeshBasicMaterial({ map: videoTexture });
+const tvScreen = new THREE.Mesh(geometry, tvmaterial);
+
+// Position the TV screen where you need it
+tvScreen.position.set(7, 34, -52); // Adjust position as needed
+
+// Add the TV screen to your scene
+scene.add(tvScreen);
 
 
 
