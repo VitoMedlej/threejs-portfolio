@@ -34,7 +34,7 @@ const Starter = () => {
   return (
     <Box className='main-title' 
       sx={{ display: isfullscreen ? 'none' : 'block', width: '200px', height: '100px' }}>
-      <Typography sx={{ fontSize: '1.75em', pt: 8, fontWeight: 500 }}>
+      <Typography component={'h1'} sx={{ fontSize: '1.75em', pt: 8, fontWeight: 600 }}>
         Hello Stranger! Welcome to my portfolio.
       </Typography>
       <Typography sx={{ fontSize: '1.05em', pt: 2, fontWeight: 400 }}>
@@ -45,7 +45,7 @@ const Starter = () => {
       </Typography>
       <Button
         onClick={handleFullScreen}
-        sx={{ width: '90%', fontStyle: 'italic', ':hover': { color: 'black', border: '1px solid black' }, background: 'black', color: 'white', mt: 4 }}>
+        sx={{ py:2,fontWeight:600,width: '90%', fontStyle: 'italic', ':hover': { color: 'black', border: '1px solid black' }, background: 'black', color: 'white', mt: 4 }}>
         DIVE RIGHT IN!
       </Button>
     </Box>

@@ -216,25 +216,10 @@ export default function Home() {
       
   
 
-      
-
-
-      const checkCollision = (cameraBoundingBox: any, boundingBoxes: any) => {
-        for (let i = 0; i < boundingBoxes.length; i++) {
-          if (cameraBoundingBox.intersectsBox(boundingBoxes[i])) {
-            return true;
-          }
-        }
-        return false;
-      };
-
-
-
-
 
 // Video Element
 const video = document.createElement('video');
-video.src = '/materials/attar.mp4'; // Path to your video
+video.src = '/materials/digi.mp4'; // Path to your video
 video.loop = true;
 video.muted = true;
 video.play();
@@ -331,46 +316,92 @@ scene.add(tvScreen);
 
         let speed = 0.5;
 
+
+        const wallThickness = 0.1;
+const wallHeight = 10;
+const wallLength = 130;
+
+const createBarrier = (x: number, z: number, width: number, depth: number) => {
+  const barrier = new THREE.Mesh(
+    new THREE.BoxGeometry(width, wallHeight, depth),
+    new THREE.MeshBasicMaterial({ transparent: true, opacity: 0  })
+  );
+  barrier.position.set(x, wallHeight / 1, z); // Adjust based on room dimensions
+  return barrier;
+};
+const barriers: THREE.Mesh[] = [];
+// Define positions and sizes for your barriers
+const leftBarrier = createBarrier(-37, 0, wallThickness, wallLength);
+
+const rightBarrier = createBarrier(55, 11, wallThickness, wallLength);
+const frontBarrier = createBarrier(0, -51, wallLength, wallThickness);
+const backBarrier = createBarrier(0, 55, wallLength, wallThickness);
+
+scene.add(leftBarrier, rightBarrier,frontBarrier,backBarrier);
+barriers.push(leftBarrier, rightBarrier, frontBarrier,backBarrier);
+
+
+const checkCollision = (cameraBoundingBox: THREE.Box3, boundingBoxes: THREE.Box3[]): boolean => {
+  for (const box of boundingBoxes) {
+      if (cameraBoundingBox.intersectsBox(box)) {
+          return true;
+      }
+  }
+  return false;
+};
+
+// Create bounding boxes for barriers
+const barrierBoundingBoxes = barriers.map(barrier => {
+  const boundingBox = new THREE.Box3().setFromObject(barrier);
+  return boundingBox;
+});
+
+
+
+
         // Animation loop
         const animate = () => {
-            // camera.position.z -=0.1;
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-            camera.position.y = 15;
-
-            var direction = new THREE.Vector3();
-            camera.getWorldDirection(direction);
-
-            var right = new THREE.Vector3();
-            right
-                .crossVectors(camera.up, direction)
-                .normalize();
-
-                if (isMovingRight) {
-                  camera
-                  .position
-                  .addScaledVector(right, speed);
-                }
-                
-                if (isMovingLeft) {
-                camera
-                    .position
-                    .addScaledVector(right, -speed);
-            }
-
-            if (isMovingForward) {
-                camera
-                    .position
-                    .addScaledVector(direction, speed);
-            }
-
-            if (isMovingBackward) {
-                camera
-                    .position
-                    .addScaledVector(direction, -speed);
-            }
-
-        };
+          requestAnimationFrame(animate);
+          renderer.render(scene, camera);
+          camera.position.y = 15;
+      
+          var direction = new THREE.Vector3();
+          camera.getWorldDirection(direction);
+      
+          var right = new THREE.Vector3();
+          right.crossVectors(camera.up, direction).normalize();
+      
+          // Update camera bounding box
+          const cameraBoundingBox = new THREE.Box3().setFromCenterAndSize(camera.position, new THREE.Vector3(1, 1, 1)); // Adjust size as needed
+      
+          if (isMovingRight) {
+              camera.position.addScaledVector(right, speed);
+              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
+                  camera.position.sub(right.clone().multiplyScalar(speed)); // Revert if collision detected
+              }
+          }
+      
+          if (isMovingLeft) {
+              camera.position.addScaledVector(right, -speed);
+              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
+                  camera.position.sub(right.clone().multiplyScalar(-speed)); // Revert if collision detected
+              }
+          }
+      
+          if (isMovingForward) {
+              camera.position.addScaledVector(direction, speed);
+              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
+                  camera.position.sub(direction.clone().multiplyScalar(speed)); // Revert if collision detected
+              }
+          }
+      
+          if (isMovingBackward) {
+              camera.position.addScaledVector(direction, -speed);
+              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
+                  camera.position.sub(direction.clone().multiplyScalar(-speed)); // Revert if collision detected
+              }
+          }
+      };
 
         animate();
 

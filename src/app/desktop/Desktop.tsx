@@ -181,7 +181,45 @@ terrain.receiveShadow = true;
 scene.add(terrain);
 
 
+const wallThickness = 0.1;
+const wallHeight = 10;
+const wallLength = 130;
 
+const createBarrier = (x: number, z: number, width: number, depth: number) => {
+  const barrier = new THREE.Mesh(
+    new THREE.BoxGeometry(width, wallHeight, depth),
+    new THREE.MeshBasicMaterial({ transparent: true, opacity: 0  })
+  );
+  barrier.position.set(x, wallHeight / 1, z); // Adjust based on room dimensions
+  return barrier;
+};
+const barriers: THREE.Mesh[] = [];
+// Define positions and sizes for your barriers
+const leftBarrier = createBarrier(-37, 0, wallThickness, wallLength);
+
+const rightBarrier = createBarrier(55, 11, wallThickness, wallLength);
+const frontBarrier = createBarrier(0, -51, wallLength, wallThickness);
+const backBarrier = createBarrier(0, 55, wallLength, wallThickness);
+
+scene.add(leftBarrier, rightBarrier,frontBarrier,backBarrier);
+barriers.push(leftBarrier, rightBarrier, frontBarrier,backBarrier);
+
+
+
+const checkCollision = (cameraPosition: THREE.Vector3) => {
+  const cameraBox = new THREE.Box3().setFromCenterAndSize(
+    cameraPosition,
+    new THREE.Vector3(1, 1, 1) // Adjust size for better collision detection
+  );
+
+  for (const barrier of barriers) {
+    const barrierBox = new THREE.Box3().setFromObject(barrier);
+    if (cameraBox.intersectsBox(barrierBox)) {
+      return true;
+    }
+  }
+  return false;
+};
 
 
 // gltfloader.load('/materials/frame2.glb', (gltf) => {
@@ -247,7 +285,7 @@ scene.add(terrain);
 
 // Video Element
 const video = document.createElement('video');
-video.src = '/materials/attar.mp4'; // Path to your video
+video.src = '/materials/digi.mp4'; // Path to your video
 video.loop = true;
 video.muted = true;
 video.play();
@@ -311,24 +349,35 @@ scene.add(ambientLight);
  
 
 
+
+
+      const handleMovement = () => {
+        const originalPosition = controls.getObject().position.clone();
+        controls.moveRight(velocity.x * 1);
+        controls.moveForward(-velocity.z * 1);
+      
+        if (checkCollision(controls.getObject().position)) {
+          controls.getObject().position.copy(originalPosition); // Reset to original position if collision detected
+        }
+      };
+
       renderer.shadowMap.type = THREE.PCFSoftShadowMap; // or THREE.BasicShadowMap
       // scene.traverse(function (node) {
       //   if (node instanceof THREE.Mesh) {
       //     node.material.needsUpdate = true;
       //   }
       // });
+
+
+
       const animate = () => {
         requestAnimationFrame(animate);
             stats.begin();
             lighthelper.update();
             
-          
+            handleMovement();   
          
-        // let originalPosition = controls.getObject().position.clone();
-
-        controls.moveRight(velocity.x * 1); // Adjust speed as needed
-        controls.moveForward(-velocity.z * 1); // Adjust speed as needed
-
+        
         // const cameraBoundingBox = new THREE.Box3(
         //   new THREE.Vector3(
         //     camera.position.x - 0.5,
@@ -363,8 +412,8 @@ scene.add(ambientLight);
   }, []);
 
   return (
-    <div id="fullscreen-container" style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-    <canvas ref={canvasRef} style={{ width: '100%', height: '100vh' }} />
+    <div id="fullscreen-container" style={{ position: 'relative', width: '100vw', height: '100vh !Important' }}>
+    <canvas ref={canvasRef} style={{ width: '100%', height: '100vh !Important' }} />
   </div>
   );
 };
