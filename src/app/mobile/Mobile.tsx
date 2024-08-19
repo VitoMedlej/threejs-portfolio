@@ -305,6 +305,7 @@ scene.add(tvScreen);
         });
 
         const buttons : any = document.querySelectorAll('.mobile-button')
+        console.log('buttons: ', buttons);
 
         buttons.forEach((button : any) => {
             button.addEventListener('touchstart', (e : any) => {
@@ -448,7 +449,7 @@ const startRendering = () => {
    <>
   <div id="fullscreen-container" style={{ position: 'relative',width: '100%',  height: '100vh' }}>
       <canvas ref={canvasRef} style={{     width: '100%', height: '100%' }} />
-      {isLoaded && <MobileButtons />}
+      <MobileButtons isLoaded={isLoaded} />
     </div>
    
     {!isLoaded ? <div id="fullscreen-container" style={{
