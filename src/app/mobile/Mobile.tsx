@@ -90,8 +90,8 @@ export default function Home() {
         const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
 
         // Create meshes
-        const cube = new THREE.Mesh(boxGeometry, material);
-        const sphere = new THREE.Mesh(sphereGeometry, material);
+        // const cube = new THREE.Mesh(boxGeometry, material);
+        // const sphere = new THREE.Mesh(sphereGeometry, material);
 
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
@@ -119,7 +119,7 @@ export default function Home() {
 
 
         const gltfloader = new GLTFLoader();
-        const textureLoader = new THREE.TextureLoader();
+        // const textureLoader = new THREE.TextureLoader();
         // const dummyTexture = textureLoader.load('/materials/laptoptexture.png');
         gltfloader.load('/materials/new.glb', (gltf) => {
           gltf.scene.traverse((node) => {
@@ -166,7 +166,7 @@ export default function Home() {
         light2.castShadow = true;
         
         
-        const lighthelper = new THREE.SpotLightHelper(light2) 
+        // const lighthelper = new THREE.SpotLightHelper(light2) 
         
         
         
@@ -219,7 +219,7 @@ export default function Home() {
 
 // Video Element
 const video = document.createElement('video');
-video.src = '/materials/digi.mp4'; // Path to your video
+video.src = '/materials/MyVideo_2.mp4'; // Path to your video
 video.loop = true;
 video.muted = true;
 video.play();

@@ -5,7 +5,7 @@ import Desktop from './desktop/Desktop';
 import Mobile from './mobile/Mobile';
 
 const Page = () => {
-  const isSmallScreen = useMediaQuery('(max-width:500px)');
+  const isSmallScreen = useMediaQuery('(max-width:690px)');
 
   return (
     <>

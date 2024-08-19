@@ -285,7 +285,7 @@ const checkCollision = (cameraPosition: THREE.Vector3) => {
 
 // Video Element
 const video = document.createElement('video');
-video.src = '/materials/digi.mp4'; // Path to your video
+video.src = '/materials/MyVideo_2.mp4'; // Path to your video
 video.loop = true;
 video.muted = true;
 video.play();
