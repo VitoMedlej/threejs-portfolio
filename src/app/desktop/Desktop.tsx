@@ -15,6 +15,8 @@ const ThreeScene: React.FC = () => {
 
   
   useEffect(() => {
+    let modelsLoaded = false;
+
     let scene: THREE.Scene,
       camera: THREE.PerspectiveCamera,
       renderer: THREE.WebGLRenderer,
@@ -101,25 +103,22 @@ renderer.shadowMap.enabled = true;
 
 
 const gltfloader = new GLTFLoader();
-const textureLoader = new THREE.TextureLoader();
-// const dummyTexture = textureLoader.load('/materials/laptoptexture.png');
-gltfloader.load('/materials/new.glb', (gltf:  any) => {
-  gltf.scene.traverse((node : any) => {
+// const textureLoader = new THREE.TextureLoader();
+
+gltfloader.load('/materials/new.glb', (gltf: any) => {
+  gltf.scene.traverse((node: any) => {
     if (node instanceof THREE.Mesh) {
-        node.receiveShadow = true;
-        node.castShadow = true;
-
-     
+      node.receiveShadow = true;
+      node.castShadow = true;
     }
-
   });
-
-  // Adjust scale/position if needed
   gltf.scene.scale.set(6, 6, 6);
   gltf.scene.position.set(5, -5, 5);
-
   scene.add(gltf.scene);
-}, undefined, (error : any) => {
+
+  modelsLoaded = true;
+  if (modelsLoaded) startRendering(); // Trigger rendering after models load
+}, undefined, (error: any) => {
   console.error('An error occurred loading the model:', error);
 });
 
@@ -346,9 +345,6 @@ scene.add(ambientLight);
       document.addEventListener("keyup", onKeyUp);
       document.addEventListener('pointerlockchange', handleLockChange);
 
- 
-
-
 
 
       const handleMovement = () => {
@@ -370,38 +366,22 @@ scene.add(ambientLight);
 
 
 
-      const animate = () => {
-        requestAnimationFrame(animate);
-            stats.begin();
-            lighthelper.update();
-            
-            handleMovement();   
-         
-        
-        // const cameraBoundingBox = new THREE.Box3(
-        //   new THREE.Vector3(
-        //     camera.position.x - 0.5,
-        //     camera.position.y - 0.5,
-        //     camera.position.z - 0.5
-        //   ),
-        //   new THREE.Vector3(
-        //     camera.position.x + 0.5,
-        //     camera.position.y + 0.5,
-        //     camera.position.z + 0.5
-        //   )
-        // );
+     
 
-        // if (checkCollision(cameraBoundingBox, boundingBoxes)) {
-        //   controls.getObject().position.copy(originalPosition);
-        // }
 
-        renderer.render(scene, camera);
-        // console.log(renderer.info.render.calls);
-        stats.end();
+      const startRendering = () => {
+        const animate = () => {
+          requestAnimationFrame(animate);
+          // Render only when models are loaded
+          if (modelsLoaded) {
+            handleMovement();
+            renderer.render(scene, camera);
+          }
+        };
+        animate();
       };
-
-      animate();
     };
+ 
   
     init();
 
@@ -412,8 +392,8 @@ scene.add(ambientLight);
   }, []);
 
   return (
-    <div id="fullscreen-container" style={{ position: 'relative', width: '100vw', height: '100vh !Important' }}>
-    <canvas ref={canvasRef} style={{ width: '100%', height: '100vh !Important' }} />
+    <div id="fullscreen-container" style={{ maxWidth:'1600px',margin:'0 auto', position: 'relative', width: '100vw', height: '100vh !Important' }}>
+    <canvas ref={canvasRef} style={{ width: '100vh', height: '100vh !Important' }} />
   </div>
   );
 };

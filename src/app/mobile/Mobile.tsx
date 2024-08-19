@@ -1,19 +1,15 @@
 "use client";
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import * as THREE from 'three';
-import { OBJLoader } from 'three-stdlib';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import MobileButtons from '../MobileButtons/MobileButtons';
 
 export default function Home() {
     const canvasRef = useRef < any > (null);
-    // const [movement,
-    //     setMovement] = useState({});
-    const pictureFrameRef : any = useRef();
-
     useEffect(() => {
         if (!canvasRef.current) 
             return;
+        let modelsLoaded = false;
 
 
 
@@ -119,25 +115,20 @@ export default function Home() {
 
 
         const gltfloader = new GLTFLoader();
-        // const textureLoader = new THREE.TextureLoader();
-        // const dummyTexture = textureLoader.load('/materials/laptoptexture.png');
-        gltfloader.load('/materials/new.glb', (gltf) => {
-          gltf.scene.traverse((node) => {
+        gltfloader.load('/materials/new.glb', (gltf: any) => {
+          gltf.scene.traverse((node: any) => {
             if (node instanceof THREE.Mesh) {
-                node.receiveShadow = true;
-                node.castShadow = true;
-        
-             
+              node.receiveShadow = true;
+              node.castShadow = true;
             }
-        
           });
-        
-          // Adjust scale/position if needed
           gltf.scene.scale.set(6, 6, 6);
           gltf.scene.position.set(5, -5, 5);
-        
           scene.add(gltf.scene);
-        }, undefined, (error) => {
+    
+          modelsLoaded = true;
+          if (modelsLoaded) startRendering(); // Trigger rendering after models load
+        }, undefined, (error: any) => {
           console.error('An error occurred loading the model:', error);
         });
         
@@ -358,53 +349,67 @@ const barrierBoundingBoxes = barriers.map(barrier => {
 
 
 
+const startRendering = () => {
+  const animate = () => {
+    requestAnimationFrame(animate);
 
-        // Animation loop
-        const animate = () => {
-          requestAnimationFrame(animate);
-          renderer.render(scene, camera);
-          camera.position.y = 15;
-      
-          var direction = new THREE.Vector3();
-          camera.getWorldDirection(direction);
-      
-          var right = new THREE.Vector3();
-          right.crossVectors(camera.up, direction).normalize();
-      
-          // Update camera bounding box
-          const cameraBoundingBox = new THREE.Box3().setFromCenterAndSize(camera.position, new THREE.Vector3(1, 1, 1)); // Adjust size as needed
-      
-          if (isMovingRight) {
-              camera.position.addScaledVector(right, speed);
-              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
-                  camera.position.sub(right.clone().multiplyScalar(speed)); // Revert if collision detected
-              }
-          }
-      
-          if (isMovingLeft) {
-              camera.position.addScaledVector(right, -speed);
-              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
-                  camera.position.sub(right.clone().multiplyScalar(-speed)); // Revert if collision detected
-              }
-          }
-      
-          if (isMovingForward) {
-              camera.position.addScaledVector(direction, speed);
-              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
-                  camera.position.sub(direction.clone().multiplyScalar(speed)); // Revert if collision detected
-              }
-          }
-      
-          if (isMovingBackward) {
-              camera.position.addScaledVector(direction, -speed);
-              if (checkCollision(cameraBoundingBox, barrierBoundingBoxes)) {
-                  camera.position.sub(direction.clone().multiplyScalar(-speed)); // Revert if collision detected
-              }
-          }
-      };
+    if (modelsLoaded) {
+      renderer.render(scene, camera);
+    }
+    camera.position.y = 15;
 
-        animate();
+    const direction = new THREE.Vector3();
+    camera.getWorldDirection(direction);
 
+    const right = new THREE.Vector3();
+    right.crossVectors(camera.up, direction).normalize();
+
+    const offset = 0.9; // Amount to kick back if needed
+
+    // Calculate intended movement and check for collisions before applying it
+    const intendedPosition = camera.position.clone();
+
+    if (isMovingRight) {
+      intendedPosition.addScaledVector(right, speed);
+    }
+    if (isMovingLeft) {
+      intendedPosition.addScaledVector(right, -speed);
+    }
+    if (isMovingForward) {
+      intendedPosition.addScaledVector(direction, speed);
+    }
+    if (isMovingBackward) {
+      intendedPosition.addScaledVector(direction, -speed);
+    }
+
+    // Create a bounding box for the intended position
+    const intendedBoundingBox = new THREE.Box3().setFromCenterAndSize(intendedPosition, new THREE.Vector3(1, 1, 1)); // Adjust size as needed
+
+    // Check for collisions
+    const collisionDetected = checkCollision(intendedBoundingBox, barrierBoundingBoxes);
+
+    // Only update the camera position if no collision is detected
+    if (!collisionDetected) {
+      camera.position.copy(intendedPosition);
+    } else {
+      // Optionally add a kick-back if a collision is detected
+      if (isMovingRight) {
+        camera.position.sub(right.clone().multiplyScalar(offset));
+      }
+      if (isMovingLeft) {
+        camera.position.sub(right.clone().multiplyScalar(-offset));
+      }
+      if (isMovingForward) {
+        camera.position.sub(direction.clone().multiplyScalar(offset));
+      }
+      if (isMovingBackward) {
+        camera.position.sub(direction.clone().multiplyScalar(-offset));
+      }
+    }
+  };
+
+  animate();
+};
         // Cleanup on unmount
         return () => {
             window.removeEventListener('touchstart', () => {});
@@ -423,10 +428,10 @@ const barrierBoundingBoxes = barriers.map(barrier => {
    {/* <PictureFrame ref={pictureFrameRef} /> */}
     
    <>
-   <div id="fullscreen-container" style={{ position: 'relative',width: '100%',  height: '100vh' }}>
+  { <div id="fullscreen-container" style={{ position: 'relative',width: '100%',  height: '100vh' }}>
       <canvas ref={canvasRef} style={{     width: '100%', height: '100%' }} />
       <MobileButtons />
-    </div>
+    </div>}
   </>
   </ >
 };
