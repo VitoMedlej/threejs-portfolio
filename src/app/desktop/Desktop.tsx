@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 // import MobileButtons from "../MobileButtons/MobileButtons";
 import { GLTFLoader } from "three-stdlib";
-import Stats from 'stats.js';
+// import Stats from 'stats.js';
 import { useFullscreen, useLoadState } from "../Context/Context";
 
 
@@ -55,7 +55,6 @@ const ThreeScene: React.FC = () => {
 
     const init = () => {
       const buttons: any = document.querySelectorAll(".mobile-button");
-      console.log("buttons: ", buttons);
 
       buttons.forEach((button: any) => {
         button.addEventListener("touchstart", (e: any) => {
@@ -75,11 +74,11 @@ const ThreeScene: React.FC = () => {
 
 
      
-        const stats = new Stats();
+//         const stats = new Stats();
 
-const panel = new Stats.Panel("FPS", "#ff0000", "#0000ff");
-        stats.addPanel(panel);
-        stats.showPanel(0);
+// const panel = new Stats.Panel("FPS", "#ff0000", "#0000ff");
+//         stats.addPanel(panel);
+//         stats.showPanel(0);
 
 // Camera
 camera = new THREE.PerspectiveCamera(
@@ -90,7 +89,7 @@ camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 15, 25);
 
-document.body.appendChild(stats.dom);
+// document.body.appendChild(stats.dom);
 
 
 // Renderer
@@ -99,7 +98,7 @@ renderer = new THREE.WebGLRenderer({
   , precision: 'highp'
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
+// renderer.shadowMap.enabled = true;
 
 
 
@@ -109,8 +108,8 @@ const gltfloader = new GLTFLoader();
 gltfloader.load('/materials/new.glb', (gltf: any) => {
   gltf.scene.traverse((node: any) => {
     if (node instanceof THREE.Mesh) {
-      node.receiveShadow = true;
-      node.castShadow = true;
+      // node.receiveShadow = true;
+      // node.castShadow = true;
     }
   });
   gltf.scene.scale.set(6, 6, 6);
@@ -137,22 +136,15 @@ const texture3 = loader.load("/materials/woodfloor.jpg", function (texture : any
   texture.repeat.set(3, 3);
 });
 
-const light1 = new THREE.SpotLight('white', 0.8);
-light1.position.set(0, 70, 0);
-light1.decay = 0.1;
-light1.distance = 110;
 
-light1.angle = Math.PI / 1; 
-light1.castShadow = true;
-
-const light2 = new THREE.SpotLight('white', 0.8);
+const light2 = new THREE.SpotLight('white', 0.4);
 light2.position.set(0, 70, 0);
 light2.decay = 0.1;
 light2.intensity = 2;
 light2.distance = 110;
 
 light2.angle = Math.PI / 1; 
-light2.castShadow = true;
+// light2.castShadow = true;
 
 
 // const lighthelper = new THREE.SpotLightHelper(light2) 
@@ -181,7 +173,7 @@ const terrain = new THREE.Mesh(terrainGeometry, terrainMaterial);
 
 terrain.rotation.x = -Math.PI / 2;
 terrain.position.y = -2;
-terrain.receiveShadow = true;
+// terrain.receiveShadow = true;
 
 
 
@@ -316,9 +308,7 @@ scene.add(tvScreen);
 
 
   
-
-
-const ambientLight = new THREE.AmbientLight('white',0.3)
+const ambientLight = new THREE.AmbientLight('white',0.1)
 ambientLight.position.set(0,10,0);
 scene.add(ambientLight);
 
@@ -362,7 +352,8 @@ scene.add(ambientLight);
         }
       };
 
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap; // or THREE.BasicShadowMap
+      
+      // or THREE.BasicShadowMap
       // scene.traverse(function (node) {
       //   if (node instanceof THREE.Mesh) {
       //     node.material.needsUpdate = true;
@@ -401,7 +392,7 @@ scene.add(ambientLight);
   return (
     <>
     <div id="fullscreen-container" style={{ maxWidth:'1600px',margin:'0 auto', position: 'relative', width: '100vw', height: '100vh !Important' }}>
-    <canvas ref={canvasRef} style={{ width: '100vh', height: '100vh !Important' }} />
+    <canvas ref={canvasRef} style={{ width: '100%', height: '100% !Important' }} />
   </div>
   {!isLoaded ? <div id="fullscreen-container" style={{
     // paddingTop:'51vh',

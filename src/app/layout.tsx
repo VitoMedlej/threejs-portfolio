@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/styles.css";
-import Starter from "./Starter/Starter";
+// import Starter from "./Starter/Starter";
 import ContextWrapper from "./Context/Context";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,8 +23,7 @@ export default function RootLayout({
         overflowX:'hidden',
         position:'relative', height: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}} className={inter.className}>
       <ContextWrapper>
-
-       <Starter/>
+       
         
         {children}
        

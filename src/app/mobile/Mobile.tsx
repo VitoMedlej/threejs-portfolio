@@ -10,11 +10,9 @@ export default function Home() {
     const canvasRef = useRef < any > (null);
     const {isLoaded, setLoaded} = useLoadState()
     useEffect(() => {
-      console.log('canvasRef.current: ', canvasRef.current);
         if (!canvasRef.current) 
             return;
         let modelsLoaded = false;
-        console.log('modelsLoaded: ', modelsLoaded);
 
 
 
@@ -123,8 +121,8 @@ export default function Home() {
         gltfloader.load('/materials/new.glb', (gltf: any) => {
           gltf.scene.traverse((node: any) => {
             if (node instanceof THREE.Mesh) {
-              node.receiveShadow = true;
-              node.castShadow = true;
+              // node.receiveShadow = true;
+              // node.castShadow = true;
             }
           });
           gltf.scene.scale.set(6, 6, 6);
@@ -155,22 +153,16 @@ export default function Home() {
           texture.repeat.set(3, 3);
         });
         
-        const light1 = new THREE.SpotLight('white', 2);
-        light1.position.set(0, 70, 0);
-        light1.decay = 0.1;
-        light1.distance = 110;
+ 
         
-        light1.angle = Math.PI / 1; 
-        light1.castShadow = true;
-        
-        const light2 = new THREE.SpotLight('white', 2);
+        const light2 = new THREE.SpotLight('white', 1.7);
         light2.position.set(0, 70, 0);
         light2.decay = 0.1;
         light2.intensity = 2;
         light2.distance = 110;
         
         light2.angle = Math.PI / 1; 
-        light2.castShadow = true;
+        // light2.castShadow = true;
         
         
         // const lighthelper = new THREE.SpotLightHelper(light2) 
@@ -199,7 +191,7 @@ export default function Home() {
         
         terrain.rotation.x = -Math.PI / 2;
         terrain.position.y = -2;
-        terrain.receiveShadow = true;
+        // terrain.receiveShadow = true;
         
         
         
@@ -305,7 +297,6 @@ scene.add(tvScreen);
         });
 
         const buttons : any = document.querySelectorAll('.mobile-button')
-        console.log('buttons: ', buttons);
 
         buttons.forEach((button : any) => {
             button.addEventListener('touchstart', (e : any) => {

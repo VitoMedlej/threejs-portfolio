@@ -85,3 +85,16 @@ body {
       }
     }
   }
+  .gradient {
+    background: hsla(0, 0%, 0%, 1);
+
+    background: radial-gradient(circle, hsla(0, 0%, 0%, 1) 0%, hsla(0, 0%, 0%, 1) 15%, hsla(0, 0%, 5%, 1) 81%);
+    
+    background: -moz-radial-gradient(circle, hsla(0, 0%, 0%, 1) 0%, hsla(0, 0%, 0%, 1) 15%, hsla(0, 0%, 5%, 1) 81%);
+    
+    background: -webkit-radial-gradient(circle, hsla(0, 0%, 0%, 1) 0%, hsla(0, 0%, 0%, 1) 15%, hsla(0, 0%, 5%, 1) 81%);
+ .item {
+  opacity: 0;
+
+ }
+  }
