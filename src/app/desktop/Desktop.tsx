@@ -27,16 +27,16 @@ const ThreeScene: React.FC = () => {
     const onKeyDown = (event: KeyboardEvent | any) => {
       switch (event.key) {
         case "w":
-          velocity.z = -0.7;
+          velocity.z = -0.4;
           break;
         case "a":
-          velocity.x = -0.7;
+          velocity.x = -0.4;
           break;
         case "s":
-          velocity.z = 0.9;
+          velocity.z = 0.4;
           break;
         case "d":
-          velocity.x = 0.9;
+          velocity.x = 0.4;
           break;
       }
     };
@@ -137,7 +137,7 @@ const texture3 = loader.load("/materials/woodfloor.jpg", function (texture : any
   texture.repeat.set(3, 3);
 });
 
-const light1 = new THREE.SpotLight('white', 2);
+const light1 = new THREE.SpotLight('white', 0.8);
 light1.position.set(0, 70, 0);
 light1.decay = 0.1;
 light1.distance = 110;
@@ -145,7 +145,7 @@ light1.distance = 110;
 light1.angle = Math.PI / 1; 
 light1.castShadow = true;
 
-const light2 = new THREE.SpotLight('white', 2);
+const light2 = new THREE.SpotLight('white', 0.8);
 light2.position.set(0, 70, 0);
 light2.decay = 0.1;
 light2.intensity = 2;
@@ -155,7 +155,7 @@ light2.angle = Math.PI / 1;
 light2.castShadow = true;
 
 
-const lighthelper = new THREE.SpotLightHelper(light2) 
+// const lighthelper = new THREE.SpotLightHelper(light2) 
 
 
 
@@ -318,7 +318,7 @@ scene.add(tvScreen);
   
 
 
-const ambientLight = new THREE.AmbientLight('white',2)
+const ambientLight = new THREE.AmbientLight('white',0.3)
 ambientLight.position.set(0,10,0);
 scene.add(ambientLight);
 
@@ -348,12 +348,9 @@ scene.add(ambientLight);
       });
 
       scene.add(controls.getObject());
-
       document.addEventListener("keydown", onKeyDown);
       document.addEventListener("keyup", onKeyUp);
       document.addEventListener('pointerlockchange', handleLockChange);
-
-
 
       const handleMovement = () => {
         const originalPosition = controls.getObject().position.clone();

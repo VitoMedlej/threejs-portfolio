@@ -34,8 +34,10 @@ const Starter = () => {
 
   return (
     <Box className='main-title' 
-      sx={{ display: isfullscreen ? 'none' : 'block', width: '200px', height: '100px' }}>
-        <Box sx={{display:'flex' ,flexDirection:'column', maxWidth:'400px',margin:'0 auto'}}>
+      sx={{ display: isfullscreen ? 'none' : 'block' }}>
+        <Box sx={{display:'flex', alignItems:{xs:"center",sm:'top'} ,
+        height:'100%'
+        ,flexDirection:'column', maxWidth:'400px',margin:'0 auto'}}>
 
       <Typography component={'h1'} sx={{ fontSize: '1.75em', pt: 8, fontWeight: 600 }}>
         Hello Stranger! Welcome to my portfolio.
@@ -49,7 +51,10 @@ const Starter = () => {
     {  <Button
     disabled={!isLoaded}
         onClick={handleFullScreen}
-        sx={{ py:2,fontWeight:600,width: '90%', fontStyle: 'italic', ':hover': { color: 'black', border: '1px solid black' }, background: 'black', color: 'white', mt: 4 }}>
+        sx={{ py:2,fontWeight:600,width: '90%', 
+        fontStyle: 'italic', 
+        ':hover': { color: 'black', border: '1px solid black' }, 
+        background: 'black', color: 'white', mt: {xs:2,sm:4} }}>
         DIVE RIGHT IN!
       </Button>}
       </Box>

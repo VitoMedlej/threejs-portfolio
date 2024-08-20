@@ -1,22 +1,21 @@
 .main-title {
   background: rgb(231, 231, 231);
   color: black;
-  width: 100vw;
-  height: 50vh;
+  width: 50vw;
+  height: 100vh;
   position: absolute;
   left: 0%;
   transform: translateX(0%);
   z-index: 134124 !important;
   text-align: left;
-  max-width: 500px;
 }
 .main-title div {
   padding: 1em 2em;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 690px) {
   .main-title {
-    width: 100%;
+    width: 100vw !important;
     padding: 0.45em 0.25em !important;
     height: 48vh;
   }

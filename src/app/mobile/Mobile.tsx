@@ -322,7 +322,7 @@ scene.add(tvScreen);
             })
         })
 
-        let speed = 0.5;
+        let speed = 0.4;
 
 
         const wallThickness = 0.1;
